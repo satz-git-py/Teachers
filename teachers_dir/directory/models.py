@@ -8,4 +8,4 @@ class Teacher(models.Model):
     Email_Address = models.EmailField(max_length = 254) 
     Phone_Number = models.CharField(max_length=31)
     Room_Number = models.CharField(max_length=10)
-    #Subjects Taught
+    #Subjects_Taught = models.CharField(max_length=300)
