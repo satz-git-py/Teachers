@@ -1,6 +1,34 @@
+<link rel="stylesheet" href="../../static/styles/css/directory.css">
 <br><br>
 <div>
-    <h1 align="center">
-        Directory APP  
-    </h1>
+    <h1 align="center">Directory App</h1>
+    <div >
+        <table align="center">
+            <div class="header_row">
+                <tr>
+                    <td>Click for Profile</td>
+                    <td align="left">First Name</td>
+                    <td align="left">Last Name</td>
+                    <td align="left">Email Address</td>
+                    <td align="right">Phone Number</td>
+                    <td align="right">Room Number</td>
+                    <td align="left">Subjects Taught</td>
+                </tr>
+            </div>
+            {% for teacher in teachers %}
+            <div class="teacher_row">
+                <tr>
+                    <td><a align="center" href={{teacher.id}} >Teach</a></td>
+                    
+                    <td>{{ teacher.First_Name }}</td>
+                    <td>{{ teacher.Last_Name }}</td>
+                    <td>{{ teacher.Email_Address }}</td>
+                    <td>{{ teacher.Phone_Number }}</td>
+                    <td>{{ teacher.Room_Number }}</td>
+                    <td>{{ teacher.Subjects_Taught }}</td>
+                </tr>    
+            </div>
+            {% endfor %}
+        </table>
+    </div>
 </div>

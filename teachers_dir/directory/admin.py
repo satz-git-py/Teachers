@@ -23,5 +23,5 @@ class TeacherResource(resources.ModelResource):
             dataset.headers = [str(header).lower().strip() for header in dataset.headers]
 
     def skip_row(self, instance, original):
-        
+        #logic to skip the record
         return super(YourResource, self).skip_row(instance, original)

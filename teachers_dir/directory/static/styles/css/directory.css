@@ -1,0 +1,10 @@
+.container {
+    box-align:center;
+    background: lightblue;
+
+}
+
+.text {
+    align:center;
+    widows: 50px;
+}
