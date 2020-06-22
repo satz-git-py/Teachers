@@ -1,0 +1,12 @@
+.div-h1 {
+    align:center;
+}
+
+.img-div {
+    padding:30px;
+    height:30%;
+    width:30%;
+    box-align:center;
+    background-position:center;
+    background-repeat: no-repeat;
+}

@@ -1,0 +1,4 @@
+{% with id=teacher.Profile_Picture %}
+    <img src='{{STATIC_URL}}/directory/img/21167.jpg' />
+{% endwith %}
+

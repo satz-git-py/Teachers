@@ -15,5 +15,7 @@ def directory(request):
 
 def profile(request, teach_id):
     teacher = get_object_or_404(Teacher, pk=teach_id)
-    return render(request, 'directory/profile.html', {'teacher':teacher})
+    url = f'../static/directory/img/{teacher.Profile_Picture}'
+    #../../static/directory/img/21350.JPG
+    return render(request, 'directory/profile.html', {'teacher':teacher, 'url':url})
 

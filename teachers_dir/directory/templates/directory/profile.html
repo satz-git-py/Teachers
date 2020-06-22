@@ -1,1 +1,14 @@
-<h1>{{teacher.First_Name}}</h1>
+<link rel="stylesheet" href="../../static/styles/css/directory.css">
+<body>
+    <br><br>
+    <div class='div-h1'><h1 align='center'>{{teacher.First_Name}} {{teacher.Last_Name}}</h1></div>
+    <p align='center'>Email: {{teacher.Email_Address}}</p>
+    <p align='center'>Phone Number: {{teacher.Phone_Number}}</p>
+    <p align='center'>Room Number: {{teacher.Room_Number}}</p>
+    <p align='center'>Subjects Taught: {{teacher.Subjects_Taught}}</p>
+    {% load static %}
+    <!--img src="../../static/directory/img/21350.JPG"/-->
+    <img class='img-div' src="{% static '../' %}{{url}}" />
+<body>
+
+
