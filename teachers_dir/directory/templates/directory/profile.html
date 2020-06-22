@@ -1,3 +1,4 @@
+{% load static %}
 <link rel="stylesheet" href="../../static/styles/css/directory.css">
 <body>
     <br><br>
@@ -6,7 +7,7 @@
     <p align='center'>Phone Number: {{teacher.Phone_Number}}</p>
     <p align='center'>Room Number: {{teacher.Room_Number}}</p>
     <p align='center'>Subjects Taught: {{teacher.Subjects_Taught}}</p>
-    {% load static %}
+    
     <!--img src="../../static/directory/img/21350.JPG"/-->
     <img class='img-div' src="{% static '../' %}{{url}}" />
 <body>

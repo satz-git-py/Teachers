@@ -15,6 +15,8 @@ class TeacherAdmin(ImportExportModelAdmin):
 class TeacherResource(resources.ModelResource):
     class meta:
         model = Teacher
+        import_id_fields = ('Email_Address',)
+        fields = ('Email_Address', 'First_Name', 'Last_Name', 'Profile_Picture', 'Phone_Number', 'Room_Number', 'Subjects_Taught')
     
     def before_import(self, dataset, dry_run):
         # Make standard corrections to the dataset

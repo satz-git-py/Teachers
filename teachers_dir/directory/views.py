@@ -1,6 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Teacher
-import re
+#import re
+import os
+
+#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 # Create your views here.
 def directory(request):
@@ -15,7 +19,9 @@ def directory(request):
 
 def profile(request, teach_id):
     teacher = get_object_or_404(Teacher, pk=teach_id)
-    url = f'../static/directory/img/{teacher.Profile_Picture}'
-    #../../static/directory/img/21350.JPG
+    url = f'../../static/directory/img/{teacher.Profile_Picture}'
+    url1 = os.path.join(BASE_DIR, f'static/directory/img/{teacher.Profile_Picture}')
+    if not os.path.isfile(url1.replace('\\', '/')):
+        url = '../static/directory/img/no-pp.jpg'
     return render(request, 'directory/profile.html', {'teacher':teacher, 'url':url})
 
