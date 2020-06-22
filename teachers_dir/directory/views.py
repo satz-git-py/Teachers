@@ -18,10 +18,18 @@ def directory(request):
     return render(request, 'directory/directory.html', {'teachers':teachers})
 
 def profile(request, teach_id):
+    #check for the existence of the teacher instance 
     teacher = get_object_or_404(Teacher, pk=teach_id)
+
+    # actual url used to retreive the existing images
     url = f'../../static/directory/img/{teacher.Profile_Picture}'
-    url1 = os.path.join(BASE_DIR, f'static/directory/img/{teacher.Profile_Picture}')
-    if not os.path.isfile(url1.replace('\\', '/')):
+
+    # url used for validation pupose
+    url_val = os.path.join(BASE_DIR, f'static/directory/img/{teacher.Profile_Picture}')
+
+    # checking for the existence of the actual path of the image by replacing escape char in base_dir
+    if not os.path.isfile(url_val.replace('\\', '/')):
         url = '../static/directory/img/no-pp.jpg'
+
     return render(request, 'directory/profile.html', {'teacher':teacher, 'url':url})
 
