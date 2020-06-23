@@ -51,7 +51,7 @@ class TeacherAdmin(ImportExportModelAdmin):
     #readonly_fields = ('First_Name', 'Last_Name', 'Email_Address')
 
     filter_horizontal = ()
-    list_filter = [ FirstLetterFilter, ]
+    list_filter = [ FirstLetterFilter,]
 
 class TeacherResource(resources.ModelResource):
     class meta:
