@@ -1,6 +1,6 @@
 #from tablib import dataset
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
+#from django.contrib.auth.admin import UserAdmin
 from .models import Teacher
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources
@@ -53,6 +53,7 @@ class TeacherAdmin(ImportExportModelAdmin):
     filter_horizontal = ()
     list_filter = [ FirstLetterFilter,]
 
+'''
 class TeacherResource(resources.ModelResource):
     class meta:
         model = Teacher
@@ -69,9 +70,8 @@ class TeacherResource(resources.ModelResource):
         #logic to skip the record
 
         return super(TeacherResource, self).skip_row(instance, original)
-
-
 '''
+
 class ModelResource(resources.ModelResource):
     def get_field_names(self):
         names = []
@@ -102,4 +102,3 @@ class ModelResource(resources.ModelResource):
             import_result.import_type = RowResult.IMPORT_TYPE_SKIP
 
         return import_result
-'''
