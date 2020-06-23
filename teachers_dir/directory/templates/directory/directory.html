@@ -3,30 +3,30 @@
 <br><br>
 <div>
     <h1 align="center">Directory App</h1>
-    <a align='right' href='admin/'>Admin</a>
+    <a align='right' href='admin/'><h4 align="center">Admin</h4></a>
     <div >
         <table align="center">
             <div class="header_row">
-                <tr>
-                    <td>Click for Profile</td>
-                    <td align="left">First Name</td>
-                    <td align="left">Last Name</td>
-                    <td align="left">Email Address</td>
-                    <td align="right">Phone Number</td>
-                    <td align="right">Room Number</td>
-                    <td align="left">Subjects Taught</td>
+                <tr styles="background:blue">
+                    <td style="width: 100px;"><h4 align="center">Profile</h4></td>
+                    <td style="width: 100px;"><h4 align="center">First Name</h4></td>
+                    <td style="width: 100px;"><h4 align="center">Last Name</h4></td>
+                    <td style="width: 100px;"><h4 align="center">Email Address</h4></td>
+                    <td style="width: 104px;"><h4 align="center">Phone Number</h4></td>
+                    <td style="width: 120px;"><h4 align="center">Room Number</h4></td>
+                    <td style="width: 100px;"><h4 align="center">Subjects Taught</h4></td>
                 </tr>
             </div>
             {% for teacher in teachers %}
             <div class="teacher_row">
                 <tr>
-                    <td><a align="center" href={{teacher.id}} >Teach</a></td>
+                    <td><div align='center'><a align="center" href={{teacher.id}} >Teach</a></div></td>
                     
-                    <td>{{ teacher.First_Name }}</td>
+                    <td><div>{{ teacher.First_Name }}</div></td>
                     <td>{{ teacher.Last_Name }}</td>
                     <td>{{ teacher.Email_Address }}</td>
-                    <td>{{ teacher.Phone_Number }}</td>
-                    <td>{{ teacher.Room_Number }}</td>
+                    <td><div align='right'>{{ teacher.Phone_Number }}</div></td>
+                    <td><div align='center'>{{ teacher.Room_Number }}</div></td>
                     <td>{{ teacher.Subjects_Taught }}</td>
                 </tr>    
             </div>
