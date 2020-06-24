@@ -1,0 +1,18 @@
+{
+    "subject_taught": {
+        "limit": 5,
+        "err_msg": "Teachers are allowed to teach only 5 subjects"
+    },
+    "first_name": {
+        "empty": {
+            "err_msg": "First name should not be emplty or null value"
+        }
+    },
+    "last_name": {
+        "empty": {
+            "err_msg": "First name should not be emplty or null value"
+        }
+    }    
+}
+    
+
