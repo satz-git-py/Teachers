@@ -1,12 +1,83 @@
+body {
+    background: #D6EAF8
+    /*background: #89cdd3;*/
+}
+/*
+.page-container {
+    padding-top: 15px;
+    text-align: center;
+}
+*/
 .div-h1 {
-    align:center;
+    padding: 3px;
+    margin: 0;
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+    box-align:center;
+    text-align: center;
+    color: #1B4F72;
+    display: block;
+}
+
+.header_row {
+    background: #5DADE2
+}
+
+.profile-admin {
+    algin: right;
+    padding-right: 30px;
+}
+
+.details-wrapper {
+    /*padding-left:20%;
+    text-align: center;
+    display: inline-block;
+    box-align: center;
+    margin: auto;*/
+
+    /*
+    width: 80%;
+    text-align: left;
+    box-align: center;
+    align: center;
+    */
+}
+
+.text-wrapper {
+    padding: 10px;
+    margin: auto;
+    width: 50%;
+    border: 3px solid #1B4F72;
+    border-radius: 1em;
+    text-align: center;
+}
+
+.inner-text-wrapper {
+    padding: 10px;
+    margin: auto;
+    box-align: center;
+    display: inline-block;
+ }
+
+.img-wrapper {
+    padding: 10px;
+    margin: auto;
+    width: 50%;
+    height: 350px;
+
 }
 
 .img-div {
-    padding:30px;
-    height:600px;
-    width:600px;
-    box-align:center;
-    background-position:center;
-    background-repeat: no-repeat;
+    /*padding:30px;-*/
+    padding-left: 30%;
+    align: center;
+    width: 250px;
+    height: 250px;
+    box-align: center;
+    display: inline-block;
 }
+
+.admin-link-div {
+    width: 0;
+}
+

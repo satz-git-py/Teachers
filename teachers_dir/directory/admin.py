@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import Teacher
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources
-#from directory.filters import FirstLetterFilter
+# from directory.filters import FirstLetterFilter
 from django.contrib.admin import SimpleListFilter
 from import_export.results import RowResult
 import json
@@ -16,24 +16,32 @@ with open('directory_config.json') as f:
 # these configuration details will fo into json file or into the model
 json_config = """
 {
+    "Email_Address": {
+        "empty": {
+            "err_msg": "Email address should not be empty."
+        }
+    },
     "subject_taught": {
         "limit": 5,
-        "err_msg": "Teachers are allowed to teach only 5 subjects"
+        "max_limit": {
+            "err_msg": "Teachers are allowed to teach only 5 subjects."
+        }
     },
     "first_name": {
         "empty": {
-            "err_msg": "First name should not be emplty or null value"
+            "err_msg": "First name should not be empty."
         }
     },
     "last_name": {
         "empty": {
-            "err_msg": "First name should not be emplty or null value"
+            "err_msg": "Last name should not be empty."
         }
     }    
 }
 """
 # deserialization json data of string to json object
 directory_config = json.loads(json_config)
+
 
 # class to add filter by first letter of "Last_Name"
 class FirstLetterFilter(SimpleListFilter):
@@ -64,45 +72,52 @@ class FirstLetterFilter(SimpleListFilter):
         if filter_val in self.letters:
             return queryset.filter(Last_Name__istartswith=self.value())
 
-# increased the scope of the import_result 
-# so that it can be used for the custom errors in ModelResource class 
-global import_result
 
-# modelresource to skip the records with import errors and custom exceptions
+# ModelResource sub-class of Resource class to skip the records with import errors and custom exceptions
 class ModelResource(resources.ModelResource):
 
     def import_row(self, row, instance_loader, **kwargs):
         # overriding import_row to ignore errors and skip rows that fail to import
         # without failing the entire import
         import_result = super(ModelResource, self).import_row(row, instance_loader, **kwargs)
+        # Copy the values to display in the preview report
+        import_result.diff = [row[val] for val in row]
+        # condition to check the import errors
         if import_result.import_type == RowResult.IMPORT_TYPE_ERROR:
-            # Copy the values to display in the preview report
-            import_result.diff = [row[val] for val in row]
-            #print(import_result.diff[6])
-
             # Add a column with the error message
             import_result.diff.append('Errors: {}'.format([err.error for err in import_result.errors]))
             # clear errors and mark the record to skip
             import_result.errors = []
             import_result.import_type = RowResult.IMPORT_TYPE_SKIP
         else:
-            if len(row['Subjects_Taught'].split(',')) > directory_config['subject_taught']['limit']:
-                import_result.diff = [row[val] for val in row]
-                import_result.diff.append('Custom Exception: {}'.format(directory_config['subject_taught']['err_msg']))
-                import_result.errors = []
-                import_result.import_type = RowResult.IMPORT_TYPE_SKIP
+            if row['Email_Address'] == '' or row['Email_Address'] == ' ':
+                # Adding a column for error with custom error message - 'empty' from json for email
+                import_result.diff.append('Errors: {}'.format(directory_config['Email_Address']['empty']['err_msg']))
+            elif len(row['Subjects_Taught'].split(',')) > directory_config['subject_taught']['limit']:
+                # Adding a column for custom error message 'max_limit' from json
+                import_result.diff.append('Errors: {}'.format(directory_config['subject_taught']['max_limit']['err_msg']))
             elif row['First_Name'] == '' or row['First_Name'] == ' ':
-                import_result.diff = [row[val] for val in row]
-                import_result.diff.append('Custom Exception: {}'.format(directory_config['first_name']['empty']['err_msg']))
-                import_result.errors = []
-                import_result.import_type = RowResult.IMPORT_TYPE_SKIP
+                # Adding a column for error with custom error message 'empty' from json
+                import_result.diff.append('Errors: {}'.format(directory_config['first_name']['empty']['err_msg']))
             elif row['Last_Name'] == '' or row['Last_Name'] == ' ':
-                import_result.diff = [row[val] for val in row]
-                import_result.diff.append('Custom Exception: {}'.format(directory_config['last_name']['empty']['err_msg']))
-                import_result.errors = []
-                import_result.import_type = RowResult.IMPORT_TYPE_SKIP
-                           
+                # Adding a column for error with custom error message 'empty' from json
+                import_result.diff.append('Errors: {}'.format(directory_config['last_name']['empty']['err_msg']))
+
         return import_result
+
+    # skip_row method is to skip the records those are satisfying some specific conditions
+    def skip_row(self, instance, original):
+        # custom exceptions which will help to skip the current record, conditions included are,
+        # 1. Email_Address should not be empty
+        # 2. Subjects_Taught should not be more than 5
+        # 3. First name and Last_Name should not be blank
+        if (instance.Email_Address == '' or instance.Email_Address == ' ') or \
+                len(instance.Subjects_Taught.split(',')) > directory_config['subject_taught']['limit'] or \
+                (instance.First_Name == '' or instance.First_Name == ' ') or \
+                (instance.Last_Name == '' or instance.Last_Name == ' '):
+            # return True will advises the Resource class to skip the current record
+            # False is to include the record; which is default value
+            return True
 
     class Meta:
         skip_unchanged = True
@@ -110,36 +125,18 @@ class ModelResource(resources.ModelResource):
         raise_errors = False
         model = Teacher
 
-# Resource class handle the import of data
-class TeacherResource(resources.ModelResource):
-    class meta:
-        model = Teacher
-        import_id_fields = ('Email_Address',)
-        fields = ('Email_Address', 'First_Name', 'Last_Name', 'Profile_Picture', 'Phone_Number', 'Room_Number', 'Subjects_Taught')
-    
-    # def before_import(self, dataset, dry_run):
-    #     # Make standard corrections to the dataset
-    #     # Convert headers to lower case
-    #     if dataset.headers:
-    #         dataset.headers = [str(header).lower().strip() for header in dataset.headers]
-    #         print('*******************',dataset.headers,'*******************')
-
-    def skip_row(self, instance, original):
-        #logic to skip the record
-        print('*******************',instance,'*******************')
-        print('*******************',original,'*******************')
-        return super(TeacherResource, self).skip_row(instance, original)
-
-
+# Admin class to control the admin page
 class TeacherAdmin(ImportExportModelAdmin):
-    
+
     resource_class = ModelResource
 
-    list_fields = ('First_Name', 'Last_Name', 'Profile_Picture', 'Email_Address', 'Phone_Number', 'Room_Number', 'Subjects_Taught')
-    search_fields = ('First_Name', 'Last_Name', 'Email_Address', 'Subjects_Taught')
-    #readonly_fields = ('First_Name', 'Last_Name', 'Email_Address')
+    # table fields to display in the admin page
+    list_display = ('First_Name', 'Last_Name', 'Email_Address', 'Phone_Number', 'Room_Number', 'Subjects_Taught')
+    # search fields for the admin page
+    search_fields = ('First_Name', 'Last_Name', 'Email_Address', 'Phone_Number', 'Subjects_Taught')
 
-    filter_horizontal = ()
-    list_filter = [ FirstLetterFilter,]
+    # applying filters in the admin page
+    list_filter = [FirstLetterFilter, ]
 
+# registering the Model and ModelAdmin class
 admin.site.register(Teacher, TeacherAdmin)
